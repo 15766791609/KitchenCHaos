@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using ZFramework;
+using System;
 public class GameInput : SingletonMono<GameInput>
 {
+    public event EventHandler OnInteractAction;
     PlayerInputAction playerInputActions;
     private void Awake()
     {
+
         base.Awake();
         playerInputActions = new PlayerInputAction();
         playerInputActions.Player.Enable();
@@ -17,7 +20,7 @@ public class GameInput : SingletonMono<GameInput>
 
     private void Interact_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        Debug.Log(obj);
+        OnInteractAction?.Invoke(this,EventArgs.Empty);
     }
 
     public Vector2 GetMovementVectorNormalized()

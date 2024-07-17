@@ -3,15 +3,41 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using ZFramework;
+using System;
+
 public class Player : SingletonMono<Player>
 {
+    public event EventHandler<OnSelectedConterChangerEventArgs> OnSelectedCounterChanged;
+    public class OnSelectedConterChangerEventArgs : EventArgs
+    {
+        public ClearCounter selectedCounter;
+    }
+
+
     public float moveSpeed;
     public float rotateSpeed;
     public float playerRadius = 2.7f;
     public float playerHeight = 2.7f;
+
+
     public LayerMask countLayeMask;
     private bool isWarking;
     private Vector3 lastInteractDir;
+    private ClearCounter selectedCounter;
+
+    private void OnEnable()
+    {
+        GameInput.Instance.OnInteractAction += OnInteractAction;
+    }
+
+    private void OnInteractAction(object sender, EventArgs e)
+    {
+        if (selectedCounter != null)
+        {
+            selectedCounter.Interact();
+        }
+    }
+
     void Update()
     {
         HandleMovement();
@@ -34,13 +60,19 @@ public class Player : SingletonMono<Player>
         if (Physics.Raycast(transform.position, lastInteractDir, out RaycastHit raycast, interactDistance, countLayeMask))
         {
             //检查是否携带某个控件
-            if (raycast.transform.TryGetComponent<ClearCounter>(out ClearCounter clearCounter))
+            if (raycast.transform.TryGetComponent(out ClearCounter clearCounter))
             {
-                clearCounter.Interact();
+                //clearCounter.Interact();
+                if (clearCounter != selectedCounter)
+                {
+                    SetSelectedConter(clearCounter);
+                }
             }
-
+            else
+                SetSelectedConter(null);
         }
-
+        else
+            SetSelectedConter(null);
     }
     private void HandleMovement()
     {
@@ -80,5 +112,17 @@ public class Player : SingletonMono<Player>
         isWarking = moveDir != Vector3.zero;
 
         transform.forward = Vector3.Lerp(transform.forward, moveDir, rotateSpeed * Time.deltaTime);
+    }
+    /// <summary>
+    /// 设定当前选中的柜子
+    /// </summary>
+    private void SetSelectedConter(ClearCounter selectedCounter)
+    {
+        this.selectedCounter = selectedCounter;
+
+        OnSelectedCounterChanged?.Invoke(this, new OnSelectedConterChangerEventArgs
+        {
+            selectedCounter = selectedCounter
+        });
     }
 }

@@ -169,7 +169,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
-  rotateSpeed: 10
+  rotateSpeed: 20
   playerRadius: 0.6
   playerHeight: 2.7
   countLayeMask:
@@ -390,6 +390,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 702536709, guid: 3dde3c7b17bc96841b9cd3bfbdb9978b, type: 3}
+      propertyPath: tomatoPreab
+      value: 
+      objectReference: {fileID: 976980223594964707, guid: 2667a58c1bf0aff449d8eb78b0076bbc, type: 3}
+    - target: {fileID: 702536709, guid: 3dde3c7b17bc96841b9cd3bfbdb9978b, type: 3}
+      propertyPath: kitchenObjectSO
+      value: 
+      objectReference: {fileID: 11400000, guid: 2dd79e0f5d7084e4aaca1b9f13fe5bfa, type: 2}
     - target: {fileID: 7270873426197582190, guid: 3dde3c7b17bc96841b9cd3bfbdb9978b, type: 3}
       propertyPath: m_Name
       value: ClearCourter (1)
@@ -462,26 +470,13 @@ PrefabInstance:
       propertyPath: m_Center.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9064492769791818579, guid: 3dde3c7b17bc96841b9cd3bfbdb9978b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 7270873426318622954, guid: 3dde3c7b17bc96841b9cd3bfbdb9978b, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 3dde3c7b17bc96841b9cd3bfbdb9978b, type: 3}
---- !u!1 &702536708 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7270873426197582190, guid: 3dde3c7b17bc96841b9cd3bfbdb9978b, type: 3}
-  m_PrefabInstance: {fileID: 7270873425513172330}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &702536709
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 702536708}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac52e86589e5f9f4b99c603af07d715e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &717266587
 GameObject:
   m_ObjectHideFlags: 0
@@ -744,6 +739,63 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &4618163903222420753
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 976980223594964707, guid: 562250308d4c2704987b2b48f983e7c7, type: 3}
+      propertyPath: m_RootOrder
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 976980223594964707, guid: 562250308d4c2704987b2b48f983e7c7, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.291
+      objectReference: {fileID: 0}
+    - target: {fileID: 976980223594964707, guid: 562250308d4c2704987b2b48f983e7c7, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 976980223594964707, guid: 562250308d4c2704987b2b48f983e7c7, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 976980223594964707, guid: 562250308d4c2704987b2b48f983e7c7, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 976980223594964707, guid: 562250308d4c2704987b2b48f983e7c7, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 976980223594964707, guid: 562250308d4c2704987b2b48f983e7c7, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 976980223594964707, guid: 562250308d4c2704987b2b48f983e7c7, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 976980223594964707, guid: 562250308d4c2704987b2b48f983e7c7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 976980223594964707, guid: 562250308d4c2704987b2b48f983e7c7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 976980223594964707, guid: 562250308d4c2704987b2b48f983e7c7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3242760482041054856, guid: 562250308d4c2704987b2b48f983e7c7, type: 3}
+      propertyPath: m_Name
+      value: Tomato
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 562250308d4c2704987b2b48f983e7c7, type: 3}
 --- !u!1001 &7270873425513172330
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -751,6 +803,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 702536709, guid: 3dde3c7b17bc96841b9cd3bfbdb9978b, type: 3}
+      propertyPath: kitchenObjectSO
+      value: 
+      objectReference: {fileID: 11400000, guid: c0a9f48f0b3f54044888a4220870bee1, type: 2}
     - target: {fileID: 7270873426197582190, guid: 3dde3c7b17bc96841b9cd3bfbdb9978b, type: 3}
       propertyPath: m_Name
       value: ClearCourter
