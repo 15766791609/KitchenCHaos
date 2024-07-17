@@ -6,33 +6,33 @@ public class KitchenObject : MonoBehaviour
 {
     [SerializeField] private KitchenObjectSO kitchenObjectSO;
 
-    private ClearCounter clearCounter;
+    private IKitchenObjectParent kitchenObjectParent;
 
     public KitchenObjectSO GetKitchenObjectSO()
     {
         return kitchenObjectSO;
     }
 
-    public void SetClearCounter(ClearCounter clearCounter)
+    public void SetKitechenObjectParent(IKitchenObjectParent kitchentObjectParent)
     {
         //开始时清除箱子指定的物品并且重新赋予
-        if (this.clearCounter != null)
+        if (this.kitchenObjectParent != null)
         {
-            this.clearCounter.ClearKitchenObject();
+            this.kitchenObjectParent.ClearKitchenObject();
         }
-        this.clearCounter = clearCounter;
-        clearCounter.SetKitchenObject(this);
+        this.kitchenObjectParent = kitchentObjectParent;
+        kitchentObjectParent.SetKitchenObject(this);
 
-        if(clearCounter.HasKitchenObjetc())
+        if(kitchentObjectParent.HasKitchenObjetc())
         {
-            Debug.Log("Counter alerady has aa kitchenObject");
+            Debug.Log("kitchentObjectParent alerady has aa kitchenObject");
         }
 
-        transform.parent = clearCounter.GetKitchenObjectFollowTransrom();
+        transform.parent = kitchentObjectParent.GetKitchenObjectFollowTransrom();
         transform.localPosition = Vector3.zero;
     }
-    public ClearCounter GetClearCounter()
+    public IKitchenObjectParent GetKitchenObjectParen()
     {
-        return clearCounter;
+        return kitchenObjectParent;
     }
 }

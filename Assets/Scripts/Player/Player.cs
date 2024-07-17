@@ -5,7 +5,7 @@ using DG.Tweening;
 using ZFramework;
 using System;
 
-public class Player : SingletonMono<Player>
+public class Player : SingletonMono<Player>,IKitchenObjectParent
 {
     public event EventHandler<OnSelectedConterChangerEventArgs> OnSelectedCounterChanged;
     public class OnSelectedConterChangerEventArgs : EventArgs
@@ -18,12 +18,16 @@ public class Player : SingletonMono<Player>
     public float rotateSpeed;
     public float playerRadius = 2.7f;
     public float playerHeight = 2.7f;
-
+    [SerializeField] private Transform kitchenObjectHoldPoint;
+     
 
     public LayerMask countLayeMask;
     private bool isWarking;
     private Vector3 lastInteractDir;
     private ClearCounter selectedCounter;
+
+
+    private KitchenObject kitchenObject;
 
     private void OnEnable()
     {
@@ -34,7 +38,7 @@ public class Player : SingletonMono<Player>
     {
         if (selectedCounter != null)
         {
-            selectedCounter.Interact();
+            selectedCounter.Interact(this);
         }
     }
 
@@ -124,5 +128,30 @@ public class Player : SingletonMono<Player>
         {
             selectedCounter = selectedCounter
         });
+    }
+
+
+
+    public Transform GetKitchenObjectFollowTransrom()
+    {
+        return kitchenObjectHoldPoint;
+    }
+
+    public void SetKitchenObject(KitchenObject kitchenObject)
+    {
+        this.kitchenObject = kitchenObject;
+    }
+
+    public KitchenObject GetKitchenObject()
+    {
+        return kitchenObject;
+    }
+    public void ClearKitchenObject()
+    {
+        kitchenObject = null;
+    }
+    public bool HasKitchenObjetc()
+    {
+        return (kitchenObject != null);
     }
 }
