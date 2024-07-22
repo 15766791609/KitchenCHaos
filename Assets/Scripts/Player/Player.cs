@@ -10,7 +10,7 @@ public class Player : SingletonMono<Player>,IKitchenObjectParent
     public event EventHandler<OnSelectedConterChangerEventArgs> OnSelectedCounterChanged;
     public class OnSelectedConterChangerEventArgs : EventArgs
     {
-        public ClearCounter selectedCounter;
+        public BaseCounter selectedCounter;
     }
 
 
@@ -24,7 +24,7 @@ public class Player : SingletonMono<Player>,IKitchenObjectParent
     public LayerMask countLayeMask;
     private bool isWarking;
     private Vector3 lastInteractDir;
-    private ClearCounter selectedCounter;
+    private BaseCounter selectedCounter;
 
 
     private KitchenObject kitchenObject;
@@ -63,13 +63,13 @@ public class Player : SingletonMono<Player>,IKitchenObjectParent
         float interactDistance = 2f;
         if (Physics.Raycast(transform.position, lastInteractDir, out RaycastHit raycast, interactDistance, countLayeMask))
         {
-            //¼ì²éÊÇ·ñĞ¯´øÄ³¸ö¿Ø¼ş
-            if (raycast.transform.TryGetComponent(out ClearCounter clearCounter))
+            //æ£€æŸ¥æ˜¯å¦æºå¸¦æŸä¸ªæ§ä»¶
+            if (raycast.transform.TryGetComponent(out BaseCounter caseCounter))
             {
                 //clearCounter.Interact();
-                if (clearCounter != selectedCounter)
+                if (caseCounter != selectedCounter)
                 {
-                    SetSelectedConter(clearCounter);
+                    SetSelectedConter(caseCounter);
                 }
             }
             else
@@ -83,14 +83,18 @@ public class Player : SingletonMono<Player>,IKitchenObjectParent
 
         Vector2 inputVector = GameInput.Instance.GetMovementVectorNormalized();
         Vector3 moveDir = new Vector3(inputVector.x, 0, inputVector.y);
+
+        transform.forward = Vector3.Lerp(transform.forward, moveDir, rotateSpeed * Time.deltaTime);
+
+
         float moveDistance = moveSpeed * Time.deltaTime;
-        //ÇòĞÎÅö×²ÉäÏß»òÕß½ºÄÒÌåÅö×²ÉäÏß(Î»ÖÃ£¨µÍµã£©£¬Î»ÖÃ£¨¸ßµã£©,°ë¾¶£¬·½Ïò£¬ÒÆ¶¯¾àÀë)
+        //çƒå½¢ç¢°æ’å°„çº¿æˆ–è€…èƒ¶å›Šä½“ç¢°æ’å°„çº¿(ä½ç½®ï¼ˆä½ç‚¹ï¼‰ï¼Œä½ç½®ï¼ˆé«˜ç‚¹ï¼‰,åŠå¾„ï¼Œæ–¹å‘ï¼Œç§»åŠ¨è·ç¦»)
         bool canMove = !Physics.CapsuleCast(transform.position, transform.position
             + Vector3.up * playerRadius, playerRadius, moveDir, moveDistance);
 
         if (!canMove)
         {
-            //³¢ÊÔµ¥¸öÖáÏòÊÇ·ñ¿ÉÒÔÒÆ¶¯
+            //å°è¯•å•ä¸ªè½´å‘æ˜¯å¦å¯ä»¥ç§»åŠ¨
             Vector3 moveDirX = new Vector3(moveDir.x, 0, 0).normalized;
             canMove = !Physics.CapsuleCast(transform.position, transform.position
            + Vector3.up * playerRadius, playerRadius, moveDirX, moveDistance);
@@ -100,7 +104,7 @@ public class Player : SingletonMono<Player>,IKitchenObjectParent
             }
             else
             {
-                //³¢ÊÔµ¥¸öÖáÏòÊÇ·ñ¿ÉÒÔÒÆ¶¯
+                //å°è¯•å•ä¸ªè½´å‘æ˜¯å¦å¯ä»¥ç§»åŠ¨
                 Vector3 moveDirZ = new Vector3(0, 0, moveDir.z).normalized;
                 canMove = !Physics.CapsuleCast(transform.position, transform.position
                + Vector3.up * playerRadius, playerRadius, moveDirZ, moveDistance);
@@ -115,18 +119,17 @@ public class Player : SingletonMono<Player>,IKitchenObjectParent
             transform.position += moveDir * moveSpeed * Time.deltaTime;
         isWarking = moveDir != Vector3.zero;
 
-        transform.forward = Vector3.Lerp(transform.forward, moveDir, rotateSpeed * Time.deltaTime);
     }
     /// <summary>
-    /// Éè¶¨µ±Ç°Ñ¡ÖĞµÄ¹ñ×Ó
+    /// è®¾å®šå½“å‰é€‰ä¸­çš„æŸœå­
     /// </summary>
-    private void SetSelectedConter(ClearCounter selectedCounter)
+    private void SetSelectedConter(BaseCounter baseCounter)
     {
-        this.selectedCounter = selectedCounter;
+        this.selectedCounter = baseCounter;
 
         OnSelectedCounterChanged?.Invoke(this, new OnSelectedConterChangerEventArgs
         {
-            selectedCounter = selectedCounter
+            selectedCounter = baseCounter
         });
     }
 

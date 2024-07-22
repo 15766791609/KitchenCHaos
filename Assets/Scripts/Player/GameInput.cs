@@ -14,7 +14,7 @@ public class GameInput : SingletonMono<GameInput>
         base.Awake();
         playerInputActions = new PlayerInputAction();
         playerInputActions.Player.Enable();
-        //当指定的按键被按下时触发
+        //褰撴寚瀹氱殑鎸夐敭琚寜涓嬫椂瑙﹀彂
         playerInputActions.Player.Interact.performed += Interact_performed;
     }
 
