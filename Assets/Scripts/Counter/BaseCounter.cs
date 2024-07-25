@@ -12,6 +12,12 @@ public class BaseCounter : MonoBehaviour, IKitchenObjectParent
     {
         Debug.LogError("Interact函数在需要的柜台上未重写");
     }
+
+    public virtual void InteractAlternaten(Player play)
+    {
+        Debug.LogError("InteractAlternaten函数在需要的柜台上未重写");
+    }
+    
     public Transform GetKitchenObjectFollowTransrom()
     {
         return counterTopPoint;
@@ -34,4 +40,5 @@ public class BaseCounter : MonoBehaviour, IKitchenObjectParent
     {
         return (kitchenObject != null);
     }
+
 }

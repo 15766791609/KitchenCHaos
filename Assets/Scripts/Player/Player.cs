@@ -29,9 +29,23 @@ public class Player : SingletonMono<Player>,IKitchenObjectParent
 
     private KitchenObject kitchenObject;
 
+
+    public override void Awake()
+    {
+        base.Awake();
+    }
     private void OnEnable()
     {
         GameInput.Instance.OnInteractAction += OnInteractAction;
+        GameInput.Instance.OnInteractAlternateAction += OnInteractAlternateAction;
+    }
+
+    private void OnInteractAlternateAction(object sender, EventArgs e)
+    {
+        if (selectedCounter != null)
+        {
+            selectedCounter.InteractAlternaten(this);
+        }
     }
 
     private void OnInteractAction(object sender, EventArgs e)
@@ -84,7 +98,6 @@ public class Player : SingletonMono<Player>,IKitchenObjectParent
         Vector2 inputVector = GameInput.Instance.GetMovementVectorNormalized();
         Vector3 moveDir = new Vector3(inputVector.x, 0, inputVector.y);
 
-        transform.forward = Vector3.Lerp(transform.forward, moveDir, rotateSpeed * Time.deltaTime);
 
 
         float moveDistance = moveSpeed * Time.deltaTime;
@@ -96,7 +109,7 @@ public class Player : SingletonMono<Player>,IKitchenObjectParent
         {
             //尝试单个轴向是否可以移动
             Vector3 moveDirX = new Vector3(moveDir.x, 0, 0).normalized;
-            canMove = !Physics.CapsuleCast(transform.position, transform.position
+            canMove = moveDir.x !=0 && !Physics.CapsuleCast(transform.position, transform.position
            + Vector3.up * playerRadius, playerRadius, moveDirX, moveDistance);
             if (canMove)
             {
@@ -106,7 +119,7 @@ public class Player : SingletonMono<Player>,IKitchenObjectParent
             {
                 //尝试单个轴向是否可以移动
                 Vector3 moveDirZ = new Vector3(0, 0, moveDir.z).normalized;
-                canMove = !Physics.CapsuleCast(transform.position, transform.position
+                canMove = moveDir.z != 0 && !Physics.CapsuleCast(transform.position, transform.position
                + Vector3.up * playerRadius, playerRadius, moveDirZ, moveDistance);
                 if (canMove)
                 {
@@ -118,6 +131,9 @@ public class Player : SingletonMono<Player>,IKitchenObjectParent
         if (canMove)
             transform.position += moveDir * moveSpeed * Time.deltaTime;
         isWarking = moveDir != Vector3.zero;
+
+
+        transform.forward = Vector3.Lerp(transform.forward, moveDir, rotateSpeed * Time.deltaTime);
 
     }
     /// <summary>

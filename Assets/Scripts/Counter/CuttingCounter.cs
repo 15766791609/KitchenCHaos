@@ -2,15 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ClearCounter : BaseCounter
+public class CuttingCounter : BaseCounter
 {
-    [SerializeField] protected KitchenObjectSO kitchenObjectSO;
     public override void Interact(Player player)
     {
-        if(!HasKitchenObjetc())
+        if (!HasKitchenObjetc())
         //当柜台上没有物品时
         {
-            if(player.HasKitchenObjetc())
+            if (player.HasKitchenObjetc())
             //玩家手中持有物品
             {
                 player.GetKitchenObject().SetKitechenObjectParent(this);
@@ -18,7 +17,6 @@ public class ClearCounter : BaseCounter
             else
             //玩家手中没有物品
             {
-
             }
         }
         else
@@ -33,6 +31,15 @@ public class ClearCounter : BaseCounter
             {
                 GetKitchenObject().SetKitechenObjectParent(player);
             }
+        }
+    }
+
+    public override void InteractAlternaten(Player play)
+    {
+        if(HasKitchenObjetc())
+        {
+            //当粘板上有东西时
+            GetKitchenObject().DestroySelf();
         }
     }
 }

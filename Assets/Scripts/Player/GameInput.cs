@@ -4,11 +4,15 @@ using System.Linq;
 using UnityEngine;
 using ZFramework;
 using System;
+using UnityEngine.InputSystem;
+
 public class GameInput : SingletonMono<GameInput>
 {
     public event EventHandler OnInteractAction;
+    public event EventHandler OnInteractAlternateAction;
+
     PlayerInputAction playerInputActions;
-    private void Awake()
+    public override void Awake()
     {
 
         base.Awake();
@@ -16,9 +20,15 @@ public class GameInput : SingletonMono<GameInput>
         playerInputActions.Player.Enable();
         //当指定的按键被按下时触发
         playerInputActions.Player.Interact.performed += Interact_performed;
+        playerInputActions.Player.InteractAlternate.performed += InteractAlternate_performed;
     }
 
-    private void Interact_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    private void InteractAlternate_performed(InputAction.CallbackContext obj)
+    {
+        OnInteractAlternateAction?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void Interact_performed(InputAction.CallbackContext obj)
     {
         OnInteractAction?.Invoke(this,EventArgs.Empty);
     }
