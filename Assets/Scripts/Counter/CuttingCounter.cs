@@ -1,9 +1,23 @@
 using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CuttingCounter : BaseCounter
 {
+    //事件的直接声明
+    public event EventHandler<OnProgressChangerEventArgs> OnProGressChanged;
+    public class OnProgressChangerEventArgs : EventArgs
+    {
+        public float progressNormalized;
+    }
+    public event EventHandler OnCut;
+
+
+    [SerializeField] private CuttiongRecipeListSO cuttiongRecipeList;
+
+    //切割进度
+    private int cuttingProgress;
     public override void Interact(Player player)
     {
         if (!HasKitchenObjetc())
@@ -12,7 +26,18 @@ public class CuttingCounter : BaseCounter
             if (player.HasKitchenObjetc())
             //玩家手中持有物品
             {
-                player.GetKitchenObject().SetKitechenObjectParent(this);
+                //物品可以切割
+                if (HasRecipeWithInput(player.GetKitchenObject().GetKitchenObjectSO()))
+                {
+                    player.GetKitchenObject().SetKitechenObjectParent(this);
+                    cuttingProgress = 0;
+
+
+                    CuttiongRecipeSO cuttiongRecipeSO = GetCuttingRecipeSOWithInput(GetKitchenObject().GetKitchenObjectSO());
+                    OnProGressChanged?.Invoke(this, new OnProgressChangerEventArgs { progressNormalized = cuttingProgress * 1.0f / cuttiongRecipeSO.maxCuttingProgress });
+
+                }
+
             }
             else
             //玩家手中没有物品
@@ -22,6 +47,7 @@ public class CuttingCounter : BaseCounter
         else
         //当柜台上存在物品时
         {
+
             if (player.HasKitchenObjetc())
             //玩家手中持有物品
             {
@@ -36,10 +62,51 @@ public class CuttingCounter : BaseCounter
 
     public override void InteractAlternaten(Player play)
     {
-        if(HasKitchenObjetc())
+        //存在物品且可以进行切割
+        if (HasKitchenObjetc() && HasRecipeWithInput(GetKitchenObject().GetKitchenObjectSO()))
         {
-            //当粘板上有东西时
-            GetKitchenObject().DestroySelf();
+            cuttingProgress++;
+            CuttiongRecipeSO cuttiongRecipeSO = GetCuttingRecipeSOWithInput(GetKitchenObject().GetKitchenObjectSO());
+            OnCut?.Invoke(this,EventArgs.Empty);
+            OnProGressChanged?.Invoke(this, new OnProgressChangerEventArgs { progressNormalized = cuttingProgress * 1.0f / cuttiongRecipeSO.maxCuttingProgress  });
+            if (cuttingProgress >= cuttiongRecipeSO.maxCuttingProgress)
+            {
+                KitchenObjectSO outputKitcenObjectSO = GetOutputForInput(GetKitchenObject().GetKitchenObjectSO());
+                GetKitchenObject().DestroySelf();
+
+                KitchenObject.SpanwKitchenObject(outputKitcenObjectSO, this);
+            }
         }
+    }
+
+    /// <summary>
+    /// 检查该物体是否在切割菜单之内
+    /// </summary>
+    /// <param name="inputKitchenObjectSO"></param>
+    /// <returns></returns>
+    private bool HasRecipeWithInput(KitchenObjectSO inputKitchenObjectSO)
+    {
+        CuttiongRecipeSO cuttiongRecipeSO = GetCuttingRecipeSOWithInput(inputKitchenObjectSO);
+        return cuttiongRecipeSO != null;
+    }
+
+    private KitchenObjectSO GetOutputForInput(KitchenObjectSO inputKitchenObjectSO)
+    {
+        CuttiongRecipeSO cuttiongRecipeSO = GetCuttingRecipeSOWithInput(inputKitchenObjectSO);
+        if (cuttiongRecipeSO != null)
+            return cuttiongRecipeSO.outputSO;
+        else
+            return null;
+    }
+    private CuttiongRecipeSO GetCuttingRecipeSOWithInput(KitchenObjectSO inputKitchenObjectSO)
+    {
+        foreach (var cuttingRecipeSO in cuttiongRecipeList.cuttiongRecipesList)
+        {
+            if (inputKitchenObjectSO == cuttingRecipeSO.inputSO)
+            {
+                return cuttingRecipeSO;
+            }
+        }
+        return null;
     }
 }
