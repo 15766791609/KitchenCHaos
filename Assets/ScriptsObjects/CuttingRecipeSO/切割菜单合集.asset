@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c6bcdbe1bdc63c4fa0076bebd2c9cff, type: 3}
+  m_Name: "\u5207\u5272\u83DC\u5355\u5408\u96C6"
+  m_EditorClassIdentifier: 
+  cuttiongRecipesList:
+  - {fileID: 11400000, guid: c50a572c83fa0d748a2ef623c2a8373f, type: 2}
+  - {fileID: 11400000, guid: fd6414f95b803fb499f32b0a4d4b5edd, type: 2}
+  - {fileID: 11400000, guid: 6e047c8a148f4f045b37405fc8123034, type: 2}

@@ -57,7 +57,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5709637395077000445, guid: dbf4345fd756b754b9132dcfba1f6cb2, type: 3}
       propertyPath: m_Name
-      value: ContainerCounter_CheeseBlock
+      value: "ContainerCounter_\u5976\u916A"
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dbf4345fd756b754b9132dcfba1f6cb2, type: 3}
