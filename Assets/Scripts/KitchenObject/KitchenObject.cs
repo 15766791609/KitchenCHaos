@@ -43,7 +43,7 @@ public class KitchenObject : MonoBehaviour
     }
 
    /// <summary>
-   /// 处理后替换物品
+   /// 生成新物品
    /// </summary>
    /// <param name="kitchenObjectSO">新生成物品的SO</param>
    /// <param name="kitchenObjectParent">生成位置的父物体</param>
@@ -55,5 +55,19 @@ public class KitchenObject : MonoBehaviour
         kitchenObject.SetKitechenObjectParent(kitchenObjectParent);
 
         return kitchenObject;
+    }
+
+    public bool TryGetPlate(out PlateKitchenObject plateKitchenObject)
+    {
+        if(this is PlateKitchenObject)
+        {
+            plateKitchenObject = this as PlateKitchenObject;
+            return true;
+        }
+        else
+        {
+            plateKitchenObject = null;
+            return false;
+        }
     }
 }

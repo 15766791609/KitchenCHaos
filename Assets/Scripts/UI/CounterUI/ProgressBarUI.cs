@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,18 +6,25 @@ using UnityEngine.UI;
 
 public class ProgressBarUI : MonoBehaviour
 {
-    [SerializeField] private CuttingCounter cuttingCounter;
+    [SerializeField] private GameObject hasProgressGameObject;
     [SerializeField] private Image barImage;
-
+    private IHasProgress hasProgress;
     private void Start()
     {
-        cuttingCounter.OnProGressChanged += OnCuttingCounter_OnProGressChanged;
+        hasProgress = hasProgressGameObject.GetComponent<IHasProgress>();
+        if (hasProgress == null)
+        {
+            Debug.LogError(hasProgressGameObject + "接口对象为空，拖入的物品为空或者不带进度条对象");
+        }
+
+
+        hasProgress.OnProGressChanged += OnHasProgress_OnProGressChanged;
         barImage.fillAmount = 0;
 
         Hide();
     }
 
-    private void OnCuttingCounter_OnProGressChanged(object sender, CuttingCounter.OnProgressChangerEventArgs e)
+    private void OnHasProgress_OnProGressChanged(object sender, IHasProgress.OnProgressChangerEventArgs e)
     {
         barImage.fillAmount = e.progressNormalized;
 

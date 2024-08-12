@@ -3,14 +3,11 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CuttingCounter : BaseCounter
+public class CuttingCounter : BaseCounter,IHasProgress
 {
     //事件的直接声明
-    public event EventHandler<OnProgressChangerEventArgs> OnProGressChanged;
-    public class OnProgressChangerEventArgs : EventArgs
-    {
-        public float progressNormalized;
-    }
+    public event EventHandler<IHasProgress.OnProgressChangerEventArgs> OnProGressChanged;
+ 
     public event EventHandler OnCut;
 
 
@@ -18,6 +15,8 @@ public class CuttingCounter : BaseCounter
 
     //切割进度
     private int cuttingProgress;
+
+
     public override void Interact(Player player)
     {
         if (!HasKitchenObjetc())
@@ -34,7 +33,7 @@ public class CuttingCounter : BaseCounter
 
 
                     CuttiongRecipeSO cuttiongRecipeSO = GetCuttingRecipeSOWithInput(GetKitchenObject().GetKitchenObjectSO());
-                    OnProGressChanged?.Invoke(this, new OnProgressChangerEventArgs { progressNormalized = cuttingProgress * 1.0f / cuttiongRecipeSO.maxCuttingProgress });
+                    OnProGressChanged?.Invoke(this, new IHasProgress.OnProgressChangerEventArgs { progressNormalized = cuttingProgress * 1.0f / cuttiongRecipeSO.maxCuttingProgress });
 
                 }
 
@@ -51,6 +50,12 @@ public class CuttingCounter : BaseCounter
             if (player.HasKitchenObjetc())
             //玩家手中持有物品
             {
+                //玩家手中拿的是盘子
+                if (player.GetKitchenObject().TryGetPlate(out PlateKitchenObject plateKitchenObject))
+                {
+                    if (plateKitchenObject.TryAddIngredient(GetKitchenObject().GetKitchenObjectSO()))
+                        GetKitchenObject().DestroySelf();
+                }
             }
             else
             //玩家手中没有物品
@@ -68,7 +73,7 @@ public class CuttingCounter : BaseCounter
             cuttingProgress++;
             CuttiongRecipeSO cuttiongRecipeSO = GetCuttingRecipeSOWithInput(GetKitchenObject().GetKitchenObjectSO());
             OnCut?.Invoke(this,EventArgs.Empty);
-            OnProGressChanged?.Invoke(this, new OnProgressChangerEventArgs { progressNormalized = cuttingProgress * 1.0f / cuttiongRecipeSO.maxCuttingProgress  });
+            OnProGressChanged?.Invoke(this, new IHasProgress.OnProgressChangerEventArgs { progressNormalized = cuttingProgress * 1.0f / cuttiongRecipeSO.maxCuttingProgress  });
             if (cuttingProgress >= cuttiongRecipeSO.maxCuttingProgress)
             {
                 KitchenObjectSO outputKitcenObjectSO = GetOutputForInput(GetKitchenObject().GetKitchenObjectSO());

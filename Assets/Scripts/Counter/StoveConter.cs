@@ -3,9 +3,11 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StoveConter : BaseCounter
+public class StoveConter : BaseCounter, IHasProgress
 {
     public event EventHandler<OnStateChangedEventArgs> OnStateChanged;
+    public event EventHandler<IHasProgress.OnProgressChangerEventArgs> OnProGressChanged;
+
     public class OnStateChangedEventArgs : EventArgs 
     {
         public State state;
@@ -41,6 +43,10 @@ public class StoveConter : BaseCounter
                     break;
                 case State.Frying:
                     fryingTime += Time.deltaTime;
+                    OnProGressChanged?.Invoke(this, new IHasProgress.OnProgressChangerEventArgs
+                    {
+                        progressNormalized = fryingTime / fryingRecipeSO.fryingTimerMax
+                    });
                     if (fryingTime >= fryingRecipeSO.fryingTimerMax)
                     {
                         Debug.Log("油炸完成");
@@ -55,10 +61,15 @@ public class StoveConter : BaseCounter
                         {
                             state = state
                         });
+                      
                     }
                     break;
                 case State.Fried:
                     bruningTime += Time.deltaTime;
+                    OnProGressChanged?.Invoke(this, new IHasProgress.OnProgressChangerEventArgs
+                    {
+                        progressNormalized = bruningTime / burningRecipeSO.burningTimerMax
+                    });
                     if (bruningTime >= burningRecipeSO.burningTimerMax)
                     {
                         Debug.Log("煮坏掉哩");
@@ -70,9 +81,14 @@ public class StoveConter : BaseCounter
                         {
                             state = state
                         });
+                        OnProGressChanged?.Invoke(this, new IHasProgress.OnProgressChangerEventArgs
+                        {
+                            progressNormalized = 0
+                        });
                     }
                     break;
                 case State.Burned:
+
                     break;
             }
 
@@ -114,6 +130,24 @@ public class StoveConter : BaseCounter
             if (player.HasKitchenObjetc())
             //玩家手中持有物品
             {
+                //玩家手中拿的是盘子
+                if (player.GetKitchenObject().TryGetPlate(out PlateKitchenObject plateKitchenObject))
+                {
+                    if (plateKitchenObject.TryAddIngredient(GetKitchenObject().GetKitchenObjectSO()))
+                        GetKitchenObject().DestroySelf();
+
+
+                    state = State.Idle;
+                    OnStateChanged?.Invoke(this, new OnStateChangedEventArgs
+                    {
+                        state = state
+                    });
+
+                    OnProGressChanged?.Invoke(this, new IHasProgress.OnProgressChangerEventArgs
+                    {
+                        progressNormalized = 0
+                    });
+                }
             }
             else
             //玩家手中没有物品
@@ -123,6 +157,11 @@ public class StoveConter : BaseCounter
                 OnStateChanged?.Invoke(this, new OnStateChangedEventArgs
                 {
                     state = state
+                });
+
+                OnProGressChanged?.Invoke(this, new IHasProgress.OnProgressChangerEventArgs
+                {
+                    progressNormalized = 0
                 });
             }
         }
