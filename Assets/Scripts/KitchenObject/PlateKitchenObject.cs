@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 public class PlateKitchenObject : KitchenObject
-{
+{/// <summary>
+/// 添加新的物品到盘子上时
+/// </summary>
     public event EventHandler<OnTngredientAddedEventArgs> OnIngredientAdded;
     public class OnTngredientAddedEventArgs : EventArgs
     {
@@ -43,5 +45,10 @@ public class PlateKitchenObject : KitchenObject
 
             return true;
         }
+    }
+
+    public List<KitchenObjectSO> GetKitchenObjectSOList()
+    {
+        return kitchenObjectSOList;
     }
 }

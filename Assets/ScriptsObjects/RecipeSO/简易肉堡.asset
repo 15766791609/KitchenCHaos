@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81cd30597ae709e4b88aff05b2bc24a8, type: 3}
+  m_Name: "\u7B80\u6613\u8089\u5821"
+  m_EditorClassIdentifier: 
+  KitchenObjectList:
+  - {fileID: 11400000, guid: 8c2b0c3a7262eb64ea213c699518dd24, type: 2}
+  - {fileID: 11400000, guid: c3a0314c12bc94047af88fdb12bd4f74, type: 2}
+  recipeName: "\u7B80\u6613\u8089\u5821"
